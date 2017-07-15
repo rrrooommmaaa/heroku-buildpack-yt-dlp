@@ -1,6 +1,6 @@
 #!/bin/sh
-mkdir vendor
-echo "curl -L https://yt-dl.org/downloads/latest/youtube-dl -o vendor/youtube-dl"
-curl -L https://yt-dl.org/downloads/latest/youtube-dl -o vendor/youtube-dl
-echo "chmod a+rx vendor/youtube-dl"
-chmod a+rx vendor/youtube-dl
+mkdir yt
+echo "curl -L https://yt-dl.org/downloads/latest/youtube-dl -o yt/youtube-dl"
+curl -L https://yt-dl.org/downloads/latest/youtube-dl -o yt/youtube-dl
+echo "chmod a+rx yt/youtube-dl"
+chmod a+rx yt/youtube-dl
