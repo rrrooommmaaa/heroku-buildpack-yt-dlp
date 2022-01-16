@@ -5,3 +5,5 @@ cat << EOF
 config_vars:
   PATH: $PATH:/app/yt
 EOF
+
+echo $PATH

@@ -2,7 +2,7 @@
 mkdir /app/yt
 echo "curl --location https://github.com/yt-dlp/yt-dlp/releases/download/2021.12.01/yt-dlp -o /app/yt/yt-dlp"
 curl --location https://github.com/yt-dlp/yt-dlp/releases/download/2021.12.01/yt-dlp -o /app/yt/yt-dlp
-echo '77623d626b11d4222ac39fed6e778782a04ca0c5  yt-dlp' > /app/yt/yt-dlp.sha
-shasum --check /app/yt/yt-dlp.sha
+# echo '77623d626b11d4222ac39fed6e778782a04ca0c5  yt-dlp' > /app/yt/yt-dlp.sha
+# shasum --check /app/yt/yt-dlp.sha
 echo "chmod a+rx /app/yt/yt-dlp"
 chmod a+rx /app/yt/yt-dlp
