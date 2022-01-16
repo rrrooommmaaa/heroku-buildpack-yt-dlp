@@ -6,3 +6,4 @@ curl --location https://github.com/yt-dlp/yt-dlp/releases/download/2021.12.01/yt
 # shasum --check /app/yt/yt-dlp.sha
 echo "chmod a+rx /app/yt/yt-dlp"
 chmod a+rx /app/yt/yt-dlp
+/app/yt/yt-dlp --version
