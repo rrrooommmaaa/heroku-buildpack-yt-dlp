@@ -10,6 +10,6 @@ echo '77623d626b11d4222ac39fed6e778782a04ca0c5  yt-dlp' > yt-dlp.sha
 shasum --check yt-dlp.sha
 chmod a+rx yt-dlp
 ./yt-dlp --version
-PROFILE_PATH="$HOME/.profile.d/yt-dlp.sh"
+PROFILE_PATH="$BUILD_DIR/.profile.d/yt-dlp.sh"
 mkdir -p $(dirname $PROFILE_PATH)
-echo 'export PATH="$PATH:$BUILD_DIR/vendor/yt-dlp"' >> $PROFILE_PATH
+echo 'export PATH="$PATH:$BUILD_DIR/vendor"' >> $PROFILE_PATH
