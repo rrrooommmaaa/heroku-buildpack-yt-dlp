@@ -7,7 +7,7 @@ mkdir -p vendor/yt
 cd vendor/yt
 curl --location https://github.com/yt-dlp/yt-dlp/releases/download/2025.05.22/yt-dlp_linux -o yt-dlp
 echo 'da18d12e96f56f942706eeae19898edb86fe1880785286d49e66d69e7b55c005 yt-dlp' > yt-dlp.sha
-sha2sum --check yt-dlp.sha
+sha256sum --check yt-dlp.sha
 chmod a+rx yt-dlp
 ./yt-dlp --version
 PROFILE_PATH="$BUILD_DIR/.profile.d/yt-dlp.sh"
