@@ -8,9 +8,22 @@ cd vendor/yt
 # Download latest binary
 curl --location https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux -o yt-dlp
 
-# Download and verify checksum (optional but recommended)
+# Download checksums
 curl --location https://github.com/yt-dlp/yt-dlp/releases/latest/download/SHA2-256SUMS -o SHA2-256SUMS
-grep yt-dlp_linux SHA2-256SUMS | sha256sum --check
+
+# Extract the hash for yt-dlp_linux
+expected_sha=$(grep yt-dlp_linux SHA2-256SUMS | awk '{print $1}')
+
+# Compute the hash of the downloaded file
+actual_sha=$(sha256sum yt-dlp | awk '{print $1}')
+
+# Compare them
+if [ "$expected_sha" != "$actual_sha" ]; then
+    echo "❌ SHA256 verification failed!"
+    exit 1
+else
+    echo "✅ SHA256 verified successfully."
+fi
 
 # Make the binary executable
 chmod a+rx yt-dlp
