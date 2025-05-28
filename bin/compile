@@ -12,7 +12,7 @@ curl --location https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp
 curl --location https://github.com/yt-dlp/yt-dlp/releases/latest/download/SHA2-256SUMS -o SHA2-256SUMS
 
 # Extract the hash for yt-dlp_linux
-expected_sha=$(grep yt-dlp_linux SHA2-256SUMS | awk '{print $1}')
+expected_sha=$(grep "yt-dlp_linux$" SHA2-256SUMS | awk '{print $1}')
 
 echo "Expected SHA256: $expected_sha"
 
