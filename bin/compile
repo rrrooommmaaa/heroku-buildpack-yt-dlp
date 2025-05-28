@@ -14,8 +14,12 @@ curl --location https://github.com/yt-dlp/yt-dlp/releases/latest/download/SHA2-2
 # Extract the hash for yt-dlp_linux
 expected_sha=$(grep yt-dlp_linux SHA2-256SUMS | awk '{print $1}')
 
+echo "Expected SHA256: $expected_sha"
+
 # Compute the hash of the downloaded file
 actual_sha=$(sha256sum yt-dlp | awk '{print $1}')
+
+echo "Actual SHA256: $actual_sha"
 
 # Compare them
 if [ "$expected_sha" != "$actual_sha" ]; then
