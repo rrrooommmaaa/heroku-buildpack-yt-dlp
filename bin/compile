@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
 
 set -eo pipefail
-BUILD_DIR=${1:-}
-cd $BUILD_DIR
-mkdir -p vendor/yt
-cd vendor/yt
-# Download latest binary
+
+BUILD_DIR=${1:?}
+YT_DIR="$BUILD_DIR/vendor/yt"
+DENO_DIR="$BUILD_DIR/vendor/deno"
+
+# --- yt-dlp ----------------------------------------------------
+mkdir -p "$YT_DIR"
+cd "$YT_DIR"
+
+# Download latest yt-dlp binary
 curl --location https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux -o yt-dlp
 
 # Download checksums
@@ -13,25 +18,47 @@ curl --location https://github.com/yt-dlp/yt-dlp/releases/latest/download/SHA2-2
 
 # Extract the hash for yt-dlp_linux
 expected_sha=$(grep "yt-dlp_linux$" SHA2-256SUMS | awk '{print $1}')
-
-echo "Expected SHA256: $expected_sha"
+echo "Expected yt-dlp SHA256: $expected_sha"
 
 # Compute the hash of the downloaded file
 actual_sha=$(sha256sum yt-dlp | awk '{print $1}')
-
-echo "Actual SHA256: $actual_sha"
+echo "Actual yt-dlp SHA256:   $actual_sha"
 
 # Compare them
 if [ "$expected_sha" != "$actual_sha" ]; then
-    echo "❌ SHA256 verification failed!"
+    echo "❌ yt-dlp SHA256 verification failed!"
     exit 1
 else
-    echo "✅ SHA256 verified successfully."
+    echo "✅ yt-dlp SHA256 verified successfully."
 fi
 
 # Make the binary executable
 chmod a+rx yt-dlp
 ./yt-dlp --version
+
+# --- Deno ------------------------------------------------------
+mkdir -p "$DENO_DIR"
+cd "$DENO_DIR"
+
+# Download latest Deno Linux x86_64 build
+curl -fsSL https://github.com/denoland/deno/releases/latest/download/deno-x86_64-unknown-linux-gnu.zip -o deno.zip
+curl -fsSL https://github.com/denoland/deno/releases/latest/download/deno-x86_64-unknown-linux-gnu.zip.sha256sum -o deno.zip.sha256sum
+
+echo "Verifying Deno checksum..."
+sha256sum -c deno.zip.sha256sum
+
+# Unzip just the 'deno' binary
+unzip -q deno.zip deno
+chmod a+rx deno
+./deno --version
+
+# --- PATH export ------------------------------------------------
 PROFILE_PATH="$BUILD_DIR/.profile.d/yt-dlp.sh"
-mkdir -p $(dirname $PROFILE_PATH)
-echo 'export PATH="$PATH:/app/vendor/yt"' >> $PROFILE_PATH
+mkdir -p "$(dirname "$PROFILE_PATH")"
+
+# Add both yt-dlp and deno to PATH at runtime;
+# also put Deno cache in /tmp so it has a writable location.
+cat >> "$PROFILE_PATH" << 'EOF'
+export PATH="$PATH:/app/vendor/yt:/app/vendor/deno"
+export DENO_DIR="/tmp/deno-cache"
+EOF
